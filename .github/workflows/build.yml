@@ -10,7 +10,12 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 6.0.x
-      - run: dotnet build SemLimites.csproj -c Release
+      - run: dotnet restore SemLimites.csproj
+      - name: Listar pacote do jogo
+        shell: pwsh
+        run: |
+          Get-ChildItem "$env:USERPROFILE\.nuget\packages\amongus.gamelibs.steam" -Recurse | Select-Object -First 80 | ForEach-Object { $_.FullName }
+      - run: dotnet build SemLimites.csproj -c Release --no-restore
       - uses: actions/upload-artifact@v4
         with:
           name: SemLimites-dll
